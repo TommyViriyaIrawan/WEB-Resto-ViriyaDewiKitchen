@@ -11,12 +11,17 @@ class HomeController extends Controller
         // Data menu
         $menus = [
             [
-                'name' => 'Nasi Tim',
+                'name' => 'Nasi Tim Ayam',
                 'price' => 'Rp',
                 'image' => 'menu1.jpg', // Tambahkan gambar di folder public
             ],
             [
-                'name' => 'Bakmi Ayam',
+                'name' => 'Mie Ayam',
+                'price' => 'Rp',
+                'image' => 'menu2.jpg',
+            ],
+            [
+                'name' => 'Mie Kangkung Ayam',
                 'price' => 'Rp',
                 'image' => 'menu2.jpg',
             ],
