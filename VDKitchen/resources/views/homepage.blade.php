@@ -6,11 +6,16 @@
     <title>VDKitchen</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* Konsistensi ukuran tombol "Add" */
         .add-btn {
-            width: 100%;
-            text-align: center;
+            width: 100%; /* Tombol penuh lebar */
+            height: 40px; /* Tinggi tetap */
+            font-size: 16px;
+            margin-top: auto; /* Tombol tetap di bawah */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-
         .btn-group-container {
             display: flex;
             justify-content: space-between;
@@ -45,6 +50,41 @@
             text-align: center;
         }
 
+        /* Konsistensi ukuran kotak menu */
+        .card {
+            height: 100%; /* Membuat semua kartu memiliki tinggi seragam */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: stretch;
+            text-align: center;
+        }
+
+        .card img {
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            flex-grow: 1; /* Membuat isi kartu mengisi ruang yang tersedia */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: bold;
+            min-height: 45px; /* Atur tinggi minimum untuk mencegah perbedaan ukuran */
+        }
+
+        .card-text {
+            font-size: 0.9rem;
+            color: #555;
+            min-height: 20px; /* Konsistensi untuk harga makanan */
+        }
+
         /* Modal Pop-Up Styling */
         .modal {
             position: fixed;
@@ -72,17 +112,26 @@
         }
 
         .modal-body {
-            padding: 20px;
+            padding: 30px;
         }
 
         .btn-close {
-            background: none;
+            background: red;
             border: none;
             font-size: 1.5rem;
             line-height: 1;
-            color: #000;
+            color: black;
             cursor: pointer;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            text-align: center;
         }
+
+        .btn-close:hover {
+            background: darkred;
+            color: white;
+        }
+
         /* Styling for Order Type Group */
         .border {
             border: 1px solid #ddd;
@@ -94,8 +143,8 @@
         .fw-bold {
             font-weight: bold;
         }
+    </style>
 
-            </style>
 </head>
 <body>
     <div class="container mt-4">
@@ -119,7 +168,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Select Order Type</h5>
-                        <button type="button" class="btn-close" id="closeModal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" id="closeModal" aria-label="Close">X</button>
                     </div>
                     <div class="modal-body text-center">
                         <button id="dineInBtn" class="btn btn-primary m-2">Dine In</button>
@@ -128,6 +177,7 @@
                 </div>
             </div>
         </div>
+
 
         <ul class="nav nav-tabs mb-4">
             <li class="nav-item">
@@ -140,45 +190,44 @@
 
         <div class="tab-content">
             <!-- Tab Makanan -->
-            <div class="tab-pane fade show active" id="foods">
-                <div class="row">
-                    @foreach ($foods as $food)
-                    <div class="col-md-6 mb-4">
-                        <div class="card">
-                            <img src="{{ asset($food['image']) }}" class="card-img-top" alt="{{ $food['name'] }}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $food['name'] }}</h5>
-                                <p class="card-text">{{ $food['price'] }}</p>
-                                <button class="btn btn-primary add-btn">Add</button>
-                            </div>
+        <div class="tab-pane fade show active" id="foods">
+            <div class="row">
+                @foreach ($foods as $food)
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        <img src="{{ asset($food['image']) }}" class="card-img-top" alt="{{ $food['name'] }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $food['name'] }}</h5>
+                            <p class="card-text">{{ $food['price'] }}</p>
+                            <button class="btn btn-primary add-btn">Add</button>
                         </div>
                     </div>
-                    @endforeach
                 </div>
-            </div>
-
-            <!-- Tab Minuman -->
-            <div class="tab-pane fade" id="drinks">
-                <div class="row">
-                    @foreach ($drinks as $drink)
-                    <div class="col-md-6 mb-4">
-                        <div class="card">
-                            <img src="{{ asset($drink['image']) }}" class="card-img-top" alt="{{ $drink['name'] }}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $drink['name'] }}</h5>
-                                <p class="card-text">{{ $drink['price'] }}</p>
-                                <button class="btn btn-primary add-btn">Add</button>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
+                @endforeach
             </div>
         </div>
 
+        <!-- Tab Minuman -->
+        <div class="tab-pane fade" id="drinks">
+            <div class="row">
+                @foreach ($drinks as $drink)
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        <img src="{{ asset($drink['image']) }}" class="card-img-top" alt="{{ $drink['name'] }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $drink['name'] }}</h5>
+                            <p class="card-text">{{ $drink['price'] }}</p>
+                            <button class="btn btn-primary add-btn">Add</button>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Script for Add Button
         document.addEventListener('DOMContentLoaded', function () {
             const buttons = document.querySelectorAll('.add-btn');
 
@@ -199,16 +248,20 @@
                         const quantityDisplay = button.querySelector('.quantity-display');
                         let quantity = 1;
 
+                        // Event untuk tombol minus
                         minusBtn.addEventListener('click', () => {
-                            if (quantity > 1) {
+                            if (quantity >= 1) { // Jika quantity lebih besar dari 1
                                 quantity--;
                                 quantityDisplay.textContent = quantity;
-                            } else {
+                            } else if (quantity < 1) { // Jika quantity adalah 1
+                                // Kembali ke tombol "Add" jika quantity == 1
                                 button.classList.remove('added');
                                 button.innerHTML = 'Add';
                             }
                         });
 
+
+                        // Event untuk tombol plus
                         plusBtn.addEventListener('click', () => {
                             quantity++;
                             quantityDisplay.textContent = quantity;
@@ -217,7 +270,7 @@
                 });
             });
 
-            // Script for Order Type Modal
+            // Script untuk modal Order Type
             const orderTypeBtn = document.getElementById('orderTypeBtn');
             const orderTypeModal = document.getElementById('orderTypeModal');
             const closeModal = document.getElementById('closeModal');
@@ -243,5 +296,8 @@
             });
         });
     </script>
+
+
+
 </body>
 </html>
