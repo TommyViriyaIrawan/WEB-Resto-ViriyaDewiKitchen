@@ -6,12 +6,11 @@
     <title>VDKitchen</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Konsistensi ukuran tombol "Add" */
         .add-btn {
-            width: 100%; /* Tombol penuh lebar */
-            height: 40px; /* Tinggi tetap */
+            width: 100%;
+            height: 40px;
             font-size: 16px;
-            margin-top: auto; /* Tombol tetap di bawah */
+            margin-top: auto;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,6 +19,27 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+        .container {
+            padding-bottom: 80px; /* Tambahkan ruang di bawah kontainer */
+            }
+
+            .cart-button {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .cart-button button {
+                border: none;
+                transition: background-color 0.3s;
+            }
+
+            .cart-button button:hover {
+                background-color: #f0f0f0;
         }
 
         .minus-btn,
@@ -50,9 +70,8 @@
             text-align: center;
         }
 
-        /* Konsistensi ukuran kotak menu */
         .card {
-            height: 100%; /* Membuat semua kartu memiliki tinggi seragam */
+            height: 100%; 
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -66,7 +85,7 @@
         }
 
         .card-body {
-            flex-grow: 1; /* Membuat isi kartu mengisi ruang yang tersedia */
+            flex-grow: 1; 
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -76,16 +95,15 @@
         .card-title {
             font-size: 1rem;
             font-weight: bold;
-            min-height: 45px; /* Atur tinggi minimum untuk mencegah perbedaan ukuran */
+            min-height: 45px;
         }
 
         .card-text {
             font-size: 0.9rem;
             color: #555;
-            min-height: 20px; /* Konsistensi untuk harga makanan */
+            min-height: 20px; 
         }
 
-        /* Modal Pop-Up Styling */
         .modal {
             position: fixed;
             top: 0;
@@ -132,7 +150,6 @@
             color: white;
         }
 
-        /* Styling for Order Type Group */
         .border {
             border: 1px solid #ddd;
             background-color: #f8f9fa;
@@ -142,6 +159,23 @@
         }
         .fw-bold {
             font-weight: bold;
+        }
+        .cart-button {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-button button {
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        .cart-button button:hover {
+            background-color: #f0f0f0;
         }
     </style>
 
@@ -190,46 +224,108 @@
 
         <div class="tab-content">
             <!-- Tab Makanan -->
-        <div class="tab-pane fade show active" id="foods">
-            <div class="row">
-                @foreach ($foods as $food)
-                <div class="col-md-3 mb-4">
-                    <div class="card">
-                        <img src="{{ asset($food['image']) }}" class="card-img-top" alt="{{ $food['name'] }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $food['name'] }}</h5>
-                            <p class="card-text">{{ $food['price'] }}</p>
-                            <button class="btn btn-primary add-btn">Add</button>
+            <div class="tab-pane fade show active" id="foods">
+                <div class="row">
+                    @foreach ($foods as $food)
+                    <div class="col-6 col-md-3 mb-4"> <!-- Tambahkan col-6 -->
+                        <div class="card">
+                            <img src="{{ asset('images/' . $food['image']) }}" class="card-img-top" alt="{{ $food['name'] }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $food['name'] }}</h5>
+                                <p class="card-text">Rp{{ number_format($food['price'], 0, ',', '.') }}</p>
+                                <button class="btn btn-primary add-btn" data-price="{{ $food['price'] }}">Add</button>
+                            </div>
                         </div>
                     </div>
+                    @endforeach
                 </div>
-                @endforeach
+            </div>
+
+            <!-- Tab Minuman -->
+            <div class="tab-pane fade" id="drinks">
+                <div class="row">
+                    @foreach ($drinks as $drink)
+                    <div class="col-6 col-md-3 mb-4"> <!-- Tambahkan col-6 -->
+                        <div class="card">
+                            <img src="{{ asset('images/' . $drink['image']) }}" class="card-img-top" alt="{{ $drink['name'] }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $drink['name'] }}</h5>
+                                <p class="card-text">Rp{{ number_format($drink['price'], 0, ',', '.') }}</p>
+                                <button class="btn btn-primary add-btn" data-price="{{ $drink['price'] }}">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
         </div>
 
-        <!-- Tab Minuman -->
-        <div class="tab-pane fade" id="drinks">
-            <div class="row">
-                @foreach ($drinks as $drink)
-                <div class="col-md-3 mb-4">
-                    <div class="card">
-                        <img src="{{ asset($drink['image']) }}" class="card-img-top" alt="{{ $drink['name'] }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $drink['name'] }}</h5>
-                            <p class="card-text">{{ $drink['price'] }}</p>
-                            <button class="btn btn-primary add-btn">Add</button>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
+
+        <!-- Floating Checkout Button -->
+    <div id="floating-checkout" class="cart-button bg-primary text-white p-3 text-center">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <span>Total</span>
+                <p class="fw-bold mb-0">Rp<span id="cart-total">0</span></p>
             </div>
+            <button class="btn btn-light text-primary fw-bold rounded-pill px-4 py-2" style="" onclick="window.location.href='/checkout'">
+                CHECK OUT (<span id="item-count">0</span>)
+            </button>
         </div>
+    </div>
+    </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Modal handling
+            const orderTypeBtn = document.getElementById('orderTypeBtn');
+            const orderTypeModal = document.getElementById('orderTypeModal');
+            const closeModal = document.getElementById('closeModal');
+            const dineInBtn = document.getElementById('dineInBtn');
+            const pickUpBtn = document.getElementById('pickUpBtn');
+
+            // Open modal when "Order Type" button is clicked
+            orderTypeBtn.addEventListener('click', function () {
+                orderTypeModal.style.display = 'flex'; // Show modal
+            });
+
+            // Close modal when "X" button is clicked
+            closeModal.addEventListener('click', function () {
+                orderTypeModal.style.display = 'none'; // Hide modal
+            });
+
+            // Handle Dine In selection
+            dineInBtn.addEventListener('click', function () {
+                orderTypeBtn.textContent = 'Dine In'; // Update button text
+                orderTypeModal.style.display = 'none'; // Hide modal
+            });
+
+            // Handle Pick Up selection
+            pickUpBtn.addEventListener('click', function () {
+                orderTypeBtn.textContent = 'Pick Up'; // Update button text
+                orderTypeModal.style.display = 'none'; // Hide modal
+            });
+
+            // Close modal when clicking outside the modal content
+            orderTypeModal.addEventListener('click', function (e) {
+                if (e.target === orderTypeModal) {
+                    orderTypeModal.style.display = 'none';
+                }
+            });
+
+            // Floating cart logic (unchanged)
             const buttons = document.querySelectorAll('.add-btn');
+            const itemCount = document.getElementById('item-count');
+            const cartTotal = document.getElementById('cart-total');
+            let totalItems = 0;
+            let totalPrice = 0;
+
+            const updateCart = () => {
+                itemCount.textContent = totalItems;
+                cartTotal.textContent = totalPrice.toLocaleString('id-ID');
+            };
 
             buttons.forEach(button => {
                 button.addEventListener('click', function () {
@@ -248,54 +344,39 @@
                         const quantityDisplay = button.querySelector('.quantity-display');
                         let quantity = 1;
 
-                        // Event untuk tombol minus
+                        totalItems++;
+                        totalPrice += parseInt(button.dataset.price);
+                        updateCart();
+
                         minusBtn.addEventListener('click', () => {
-                            if (quantity >= 1) { // Jika quantity lebih besar dari 1
-                                quantity--;
+                            quantity--;
+                            if (quantity > 0) {
                                 quantityDisplay.textContent = quantity;
-                            } else if (quantity < 1) { // Jika quantity adalah 1
-                                // Kembali ke tombol "Add" jika quantity == 1
+                                totalItems--;
+                                totalPrice -= parseInt(button.dataset.price);
+                                updateCart();
+                            } else {
                                 button.classList.remove('added');
                                 button.innerHTML = 'Add';
+                                totalItems--;
+                                totalPrice -= parseInt(button.dataset.price);
+                                updateCart();
                             }
                         });
 
-
-                        // Event untuk tombol plus
                         plusBtn.addEventListener('click', () => {
                             quantity++;
                             quantityDisplay.textContent = quantity;
+                            totalItems++;
+                            totalPrice += parseInt(button.dataset.price);
+                            updateCart();
                         });
                     }
                 });
             });
-
-            // Script untuk modal Order Type
-            const orderTypeBtn = document.getElementById('orderTypeBtn');
-            const orderTypeModal = document.getElementById('orderTypeModal');
-            const closeModal = document.getElementById('closeModal');
-            const dineInBtn = document.getElementById('dineInBtn');
-            const pickUpBtn = document.getElementById('pickUpBtn');
-
-            orderTypeBtn.addEventListener('click', function () {
-                orderTypeModal.style.display = 'flex';
-            });
-
-            closeModal.addEventListener('click', function () {
-                orderTypeModal.style.display = 'none';
-            });
-
-            dineInBtn.addEventListener('click', function () {
-                orderTypeBtn.textContent = 'Dine In';
-                orderTypeModal.style.display = 'none';
-            });
-
-            pickUpBtn.addEventListener('click', function () {
-                orderTypeBtn.textContent = 'Pick Up';
-                orderTypeModal.style.display = 'none';
-            });
         });
     </script>
+
 
 
 
