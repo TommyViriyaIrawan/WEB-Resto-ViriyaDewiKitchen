@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Menu; // Pastikan model Menu sudah dibuat
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // Periksa apakah user login
+        $isGuest = $request->session()->has('guest_id'); // Cek apakah ada guest_id
+        $user = Auth::user(); // Ambil user yang sedang login
+
         // Ambil data makanan (food)
         $foods = Menu::where('category', 'food')->get();
 
@@ -16,7 +21,12 @@ class HomeController extends Controller
         $drinks = Menu::where('category', 'drink')->get();
 
         // Kirim data ke view
-        return view('homepage', compact('foods', 'drinks'));
+        return view('homepage', [
+            'foods' => $foods,
+            'drinks' => $drinks,
+            'isGuest' => $isGuest,
+            'user' => $user,
+        ]);
     }
 
     public function addToCart(Request $request)

@@ -24,22 +24,22 @@
             padding-bottom: 80px; /* Tambahkan ruang di bawah kontainer */
             }
 
-            .cart-button {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                z-index: 1000;
-                box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
-            }
+        .cart-button {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+        }
 
-            .cart-button button {
-                border: none;
-                transition: background-color 0.3s;
-            }
+        .cart-button button {
+            border: none;
+            transition: background-color 0.3s;
+        }
 
-            .cart-button button:hover {
-                background-color: #f0f0f0;
+        .cart-button button:hover {
+            background-color: #f0f0f0;
         }
 
         .minus-btn,
@@ -181,12 +181,64 @@
 
 </head>
 <body>
+    <!-- Tombol Navigasi di Header -->
+    <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+        <!-- Tombol Panah Kembali -->
+        <button class="btn btn-light border rounded-circle" onclick="window.location.href='<?= route('welcome') ?>'">
+            &#8592;
+        </button>
+
+
+        <!-- Tombol Garis Tiga -->
+        <button class="btn btn-light border rounded-circle" onclick="toggleMenuModal()">
+            ☰
+        </button>
+    </div>
+
+    <!-- Input Pencarian -->
+    <div id="searchBar" class="d-none p-3">
+        <input type="text" class="form-control" placeholder="Cari menu..." />
+    </div>
+
+    <!-- Modal Menu -->
+    <div id="menuModal" class="modal" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Menu</h5>
+                    <button type="button" class="btn-close" onclick="toggleMenuModal()">X</button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="/order-history">Order History</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="/welcome">Login</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="/privacy-policy">Privacy Policy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container mt-4">
+        <!-- Informasi User/Guest -->
         <div class="text-center mb-4">
-            <h1>Viriya Dewi Kitchen</h1>
+            @if ($isGuest)
+                <h1>Welcome, Guest!</h1>
+            @elseif ($user)
+                <h1>Welcome, {{ $user->name }}!</h1>
+            @else
+                <h1>Welcome to Viriya Dewi Kitchen!</h1>
+            @endif
             <p>Buka hari Selasa-Minggu, 06:00-14:00</p>
             <button class="btn btn-primary" onclick="window.location.href='https://maps.app.goo.gl/DS1fis8M14kJNy9s8'">Maps Location</button>
         </div>
+
         
         <!-- Order Type Section -->
         <!-- Grouped Order Type Section -->
@@ -223,61 +275,70 @@
         </ul>
 
         <div class="tab-content">
-            <!-- Tab Makanan -->
+            <!-- Daftar Makanan -->
             <div class="tab-pane fade show active" id="foods">
                 <div class="row">
                     @foreach ($foods as $food)
-                    <div class="col-6 col-md-3 mb-4"> <!-- Tambahkan col-6 -->
-                        <div class="card">
-                            <img src="{{ asset('images/' . $food['image']) }}" class="card-img-top" alt="{{ $food['name'] }}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $food['name'] }}</h5>
-                                <p class="card-text">Rp{{ number_format($food['price'], 0, ',', '.') }}</p>
-                                <button class="btn btn-primary add-btn" data-price="{{ $food['price'] }}">Add</button>
+                        <div class="col-6 col-md-3 mb-4">
+                            <div class="card">
+                                <img src="{{ asset('images/' . $food['image']) }}" class="card-img-top" alt="{{ $food['name'] }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $food['name'] }}</h5>
+                                    <p class="card-text">Rp{{ number_format($food['price'], 0, ',', '.') }}</p>
+                                    <button class="btn btn-primary add-btn" data-price="{{ $food['price'] }}">Add</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     @endforeach
                 </div>
             </div>
 
-            <!-- Tab Minuman -->
+            <!-- Daftar Minuman -->
             <div class="tab-pane fade" id="drinks">
                 <div class="row">
                     @foreach ($drinks as $drink)
-                    <div class="col-6 col-md-3 mb-4"> <!-- Tambahkan col-6 -->
-                        <div class="card">
-                            <img src="{{ asset('images/' . $drink['image']) }}" class="card-img-top" alt="{{ $drink['name'] }}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $drink['name'] }}</h5>
-                                <p class="card-text">Rp{{ number_format($drink['price'], 0, ',', '.') }}</p>
-                                <button class="btn btn-primary add-btn" data-price="{{ $drink['price'] }}">Add</button>
+                        <div class="col-6 col-md-3 mb-4">
+                            <div class="card">
+                                <img src="{{ asset('images/' . $drink['image']) }}" class="card-img-top" alt="{{ $drink['name'] }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $drink['name'] }}</h5>
+                                    <p class="card-text">Rp{{ number_format($drink['price'], 0, ',', '.') }}</p>
+                                    <button class="btn btn-primary add-btn" data-price="{{ $drink['price'] }}">Add</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     @endforeach
                 </div>
             </div>
         </div>
 
 
-        <!-- Floating Checkout Button -->
-    <div id="floating-checkout" class="cart-button bg-primary text-white p-3 text-center">
-        <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <span>Total</span>
-                <p class="fw-bold mb-0">Rp<span id="cart-total">0</span></p>
+        <!-- Floating Checkout -->
+        <div id="floating-checkout" class="cart-button bg-primary text-white p-3 text-center">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span>Total</span>
+                    <p class="fw-bold mb-0">Rp<span id="cart-total">0</span></p>
+                </div>
+                <button class="btn btn-light text-primary fw-bold rounded-pill px-4 py-2" onclick="window.location.href='/checkout'">
+                    CHECK OUT (<span id="item-count">0</span>)
+                </button>
             </div>
-            <button class="btn btn-light text-primary fw-bold rounded-pill px-4 py-2" style="" onclick="window.location.href='/checkout'">
-                CHECK OUT (<span id="item-count">0</span>)
-            </button>
         </div>
-    </div>
     </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        function toggleMenuModal() {
+            const menuModal = document.getElementById("menuModal");
+            if (menuModal.style.display === "none") {
+                menuModal.style.display = "flex";
+            } else {
+                menuModal.style.display = "none";
+            }
+        }
+        
         document.addEventListener('DOMContentLoaded', function () {
             // Modal handling
             const orderTypeBtn = document.getElementById('orderTypeBtn');
