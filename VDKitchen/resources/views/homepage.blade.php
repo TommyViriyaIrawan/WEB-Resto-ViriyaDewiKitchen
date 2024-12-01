@@ -279,7 +279,7 @@
                     @foreach ($foods as $food)
                         <div class="col-6 col-md-3 mb-4">
                             <div class="card">
-                                <img src="{{ asset('images/menus' . $food['image']) }}" class="card-img-top" alt="{{ $food['name'] }}">
+                                <img src="{{ asset('images/menus/' . $food['image']) }}" class="card-img-top" alt="{{ $food['name'] }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $food['name'] }}</h5>
                                     <p class="card-text">Rp{{ number_format($food['price'], 0, ',', '.') }}</p>
@@ -297,7 +297,7 @@
                     @foreach ($drinks as $drink)
                         <div class="col-6 col-md-3 mb-4">
                             <div class="card">
-                                <img src="{{ asset('images/menus/' . $drink['image']) }}" class="card-img-top" alt="{{ $drink['name'] }}">
+                            <img src="{{ asset('images/menus/' . $drink['image']) }}" class="card-img-top" alt="{{ $drink['name'] }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $drink['name'] }}</h5>
                                     <p class="card-text">Rp{{ number_format($drink['price'], 0, ',', '.') }}</p>

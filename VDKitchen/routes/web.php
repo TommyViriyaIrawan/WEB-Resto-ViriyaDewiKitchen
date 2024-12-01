@@ -7,8 +7,7 @@ use App\Http\Controllers\AuthController;
 
 // Welcome Page (Protected Route)
 Route::get('/welcome', [AuthController::class, 'showWelcome'])
-    ->name('welcome')
-    ->middleware('auth'); // Only accessible to authenticated users
+    ->name('welcome');
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
